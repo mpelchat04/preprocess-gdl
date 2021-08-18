@@ -32,7 +32,7 @@ def main(overwrite: bool = False,
     out_path = Path(glob_params['out_path'])
     csv_file = Path(glob_params['csv_file']) if glob_params['csv_file'] is not None else None
     out_tif_name = glob_params['out_tif_name']
-    os.chdir(base_dir)
+    # os.chdir(base_dir)
 
     import logging.config  # based on: https://stackoverflow.com/questions/15727420/using-logging-in-multiple-modules
     out_log_path = Path("./logs")

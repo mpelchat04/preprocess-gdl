@@ -51,8 +51,7 @@ def main(overwrite: bool = False,
             reader = csv.reader(f)
             lst_img = list(reader)
 
-    logging.info(msg=f"Processing folder {base_dir.parent}")
-    os.chdir(base_dir)
+    logging.info(msg=f"Processing image {out_tif_name}")
     t = tqdm(total=2)
 
     print("Merge")

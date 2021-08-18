@@ -49,7 +49,8 @@ def main(overwrite: bool = False,
     else:
         with open(str(csv_file), newline='') as f:
             reader = csv.reader(f)
-            lst_img = list(reader)
+            lst_img_tmp = list(reader)
+            lst_img = [str(elem[0]) for elem in lst_img_tmp]
 
     logging.info(msg=f"Processing image {out_tif_name}")
     t = tqdm(total=2)

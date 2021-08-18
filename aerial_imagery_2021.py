@@ -28,7 +28,7 @@ def main(overwrite: bool = False,
         availability of modules (eg. otbApplication and rio_cogeo)
     """
 
-    base_dir = Path(glob_params['base_dir'])
+    base_dir = Path(glob_params['base_dir']) if glob_params['base_dir'] is not None else None
     out_path = Path(glob_params['out_path'])
     csv_file = Path(glob_params['csv_file']) if glob_params['csv_file'] is not None else None
     out_tif_name = glob_params['out_tif_name']
@@ -47,7 +47,7 @@ def main(overwrite: bool = False,
     if csv_file is None:
         lst_img = [Path(name) for name in glob.glob(str(base_dir) + "/*.tif")]
     else:
-        with open(csv_file, newline='') as f:
+        with open(str(csv_file), newline='') as f:
             reader = csv.reader(f)
             lst_img = list(reader)
 

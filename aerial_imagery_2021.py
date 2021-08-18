@@ -49,7 +49,7 @@ def main(overwrite: bool = False,
     t = tqdm(total=2)
 
     print("Merge")
-    out_merge_name = str(base_dir.parent) + "_merge.tif"
+    out_merge_name = out_tif_name + "_merge.tif"
     out_merge = out_path / Path(out_merge_name)
 
     # 2. Merge the list of images.

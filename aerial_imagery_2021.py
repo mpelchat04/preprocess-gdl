@@ -7,6 +7,7 @@ from tqdm import tqdm
 
 from PansharpRaster import rasterio_merge_tiles
 from osgeo import gdal
+import csv
 
 from utils import read_parameters
 
@@ -29,6 +30,7 @@ def main(overwrite: bool = False,
 
     base_dir = Path(glob_params['base_dir'])
     out_path = Path(glob_params['out_path'])
+    csv_file = Path(glob_params['csv_file']) if glob_params['csv_file'] is not None else None
     out_tif_name = glob_params['out_tif_name']
     os.chdir(base_dir)
 
@@ -42,7 +44,12 @@ def main(overwrite: bool = False,
         logging.warning("DRY-RUN")
 
     # 1. BUILD list of images to merge.
-    lst_img = [Path(name) for name in glob.glob(str(base_dir) + "/*.tif")]
+    if csv_file is None:
+        lst_img = [Path(name) for name in glob.glob(str(base_dir) + "/*.tif")]
+    else:
+        with open(csv_file, newline='') as f:
+            reader = csv.reader(f)
+            lst_img = list(reader)
 
     logging.info(msg=f"Processing folder {base_dir.parent}")
     os.chdir(base_dir)

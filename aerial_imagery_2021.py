@@ -55,7 +55,7 @@ def main(overwrite: bool = False,
                 lst_img_tmp = list(reader)
                 lst_img = [str(elem[0]) for elem in lst_img_tmp]
             out_tif_name = str(Path(file).stem)
-            # process_images(logging=logging, lst_img=lst_img, out_tif_name=out_tif_name, out_path=out_path)
+            process_images(logging=logging, lst_img=lst_img, out_tif_name=out_tif_name, out_path=out_path)
 
     else:
         # 1. BUILD list of images to merge.

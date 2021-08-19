@@ -30,7 +30,12 @@ def main(overwrite: bool = False,
 
     base_dir = Path(glob_params['base_dir']) if glob_params['base_dir'] is not None else None
     out_path = Path(glob_params['out_path'])
-    csv_file = Path(glob_params['csv_file']) if glob_params['csv_file'] is not None else None
+    csv_file = glob_params['csv_file'] if glob_params['csv_file'] is not None else None
+    if not csv_file.endswith('.csv'):
+        csv_list = [Path(name) for name in glob.glob(str(csv_file) + "/*.csv")]
+    else:
+        csv_list = None
+
     out_tif_name = glob_params['out_tif_name']
     # os.chdir(base_dir)
 
@@ -43,14 +48,28 @@ def main(overwrite: bool = False,
     if dry_run:
         logging.warning("DRY-RUN")
 
-    # 1. BUILD list of images to merge.
-    if csv_file is None:
-        lst_img = [Path(name) for name in glob.glob(str(base_dir) + "/*.tif")]
+    if csv_list:
+        for file in csv_list:
+            with open(str(file), newline='') as f:
+                reader = csv.reader(f)
+                lst_img_tmp = list(reader)
+                lst_img = [str(elem[0]) for elem in lst_img_tmp]
+            out_tif_name = str(Path(file).stem)
+            # process_images(logging=logging, lst_img=lst_img, out_tif_name=out_tif_name, out_path=out_path)
+
     else:
-        with open(str(csv_file), newline='') as f:
-            reader = csv.reader(f)
-            lst_img_tmp = list(reader)
-            lst_img = [str(elem[0]) for elem in lst_img_tmp]
+        # 1. BUILD list of images to merge.
+        if csv_file is None:
+            lst_img = [Path(name) for name in glob.glob(str(base_dir) + "/*.tif")]
+        else:
+            with open(str(csv_file), newline='') as f:
+                reader = csv.reader(f)
+                lst_img_tmp = list(reader)
+                lst_img = [str(elem[0]) for elem in lst_img_tmp]
+        process_images(logging=logging, lst_img=lst_img, out_tif_name=out_tif_name, out_path=out_path)
+
+
+def process_images(logging, lst_img, out_tif_name, out_path):
 
     logging.info(msg=f"Processing image {out_tif_name}")
     t = tqdm(total=2)
@@ -60,7 +79,7 @@ def main(overwrite: bool = False,
     out_merge = out_path / Path(out_merge_name)
 
     # 2. Merge the list of images.
-    _, err = rasterio_merge_tiles(tile_list=lst_img, outfile=out_merge, overwrite=overwrite)
+    _, err = rasterio_merge_tiles(tile_list=lst_img, outfile=out_merge, overwrite=False)
 
     t.update()
 

@@ -48,7 +48,7 @@ def main(root_folder):
     with fiona.open(gpkg_path, 'w', layer="table1", driver='GPKG', schema=data_schema) as c:
         for elem in lst_info:
             pol_to_write = {
-                'geometry': json.loads(elem['geom']),
+                'geometry': elem['geom'],
                 'properties': OrderedDict([
                     ('tuile', elem['tuile'])
                 ])

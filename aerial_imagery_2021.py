@@ -48,6 +48,7 @@ def main(overwrite: bool = False,
     if dry_run:
         logging.warning("DRY-RUN")
 
+    unprocessed_image = []
     if csv_list:
         for file in csv_list:
             with open(str(file), newline='') as f:
@@ -55,7 +56,11 @@ def main(overwrite: bool = False,
                 lst_img_tmp = list(reader)
                 lst_img = [str(elem[0]) for elem in lst_img_tmp]
             out_tif_name = str(Path(file).stem)
-            process_images(logging=logging, lst_img=lst_img, out_tif_name=out_tif_name, out_path=out_path)
+            try:
+                process_images(logging=logging, lst_img=lst_img, out_tif_name=out_tif_name, out_path=out_path)
+            except:
+                print(f"could not process image {out_tif_name}")
+                unprocessed_image.append(out_tif_name)
 
     else:
         # 1. BUILD list of images to merge.
@@ -67,6 +72,9 @@ def main(overwrite: bool = False,
                 lst_img_tmp = list(reader)
                 lst_img = [str(elem[0]) for elem in lst_img_tmp]
         process_images(logging=logging, lst_img=lst_img, out_tif_name=out_tif_name, out_path=out_path)
+    
+    print(f"list of unprocessed images:")
+    print(str(unprocessed_image))
 
 
 def process_images(logging, lst_img, out_tif_name, out_path):

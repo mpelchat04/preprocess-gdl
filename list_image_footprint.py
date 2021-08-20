@@ -37,7 +37,7 @@ def main(root_folder):
 
     print("done")
     data_schema = {
-        'geometry': 'MultiPolygon',
+        'geometry': 'Polygon',
         'properties': OrderedDict([
             ('tuile', 'str')
         ])

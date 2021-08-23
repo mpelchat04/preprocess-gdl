@@ -56,6 +56,7 @@ def main(overwrite: bool = False,
                 reader = csv.reader(f)
                 lst_img_tmp = list(reader)
                 lst_img = [Path(elem[0]) for elem in lst_img_tmp]
+                lst_img.pop(0)
             out_tif_name = str(Path(file).stem)
             try:
                 process_images(logging=logging, lst_img=lst_img, out_tif_name=out_tif_name, out_path=out_path)

@@ -51,10 +51,11 @@ def main(overwrite: bool = False,
     unprocessed_image = []
     if csv_list:
         for file in csv_list:
+            os.chdir(file.parent)
             with open(str(file), newline='') as f:
                 reader = csv.reader(f)
                 lst_img_tmp = list(reader)
-                lst_img = [str(elem[0]) for elem in lst_img_tmp]
+                lst_img = [Path(elem[0]) for elem in lst_img_tmp]
             out_tif_name = str(Path(file).stem)
             try:
                 process_images(logging=logging, lst_img=lst_img, out_tif_name=out_tif_name, out_path=out_path)

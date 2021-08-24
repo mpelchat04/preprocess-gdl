@@ -5,7 +5,7 @@ glob:
   out_path: /wshare/travail/bdgrid2/EXTRACTION/Deep_learning/orthophotos/NB/lst_inferene_csv
   out_tif_name: 2018_CMQ_15cm
   csv_file: /wshare/travail/bdgrid2/EXTRACTION/Deep_learning/orthophotos/NB/lst_inference_csv
-  to_do: ['merge', 'cog']
+  cog_only: False
 
 process:
   overwrite: False # if True, overwrites existing output file

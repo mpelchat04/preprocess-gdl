@@ -31,8 +31,10 @@ def main(overwrite: bool = False,
     base_dir = Path(glob_params['base_dir']) if glob_params['base_dir'] is not None else None
     out_path = Path(glob_params['out_path'])
     csv_file = glob_params['csv_file'] if glob_params['csv_file'] is not None else None
-    if not csv_file.endswith('.csv'):
-        csv_list = [Path(name) for name in glob.glob(str(csv_file) + "/*.csv")]
+    if csv_file is not None:
+        if not csv_file.endswith('.csv'):
+            csv_list = [Path(name) for name in glob.glob(str(csv_file) + "/*.csv")]
+
     else:
         csv_list = None
 

@@ -31,6 +31,7 @@ def main(overwrite: bool = False,
     base_dir = Path(glob_params['base_dir']) if glob_params['base_dir'] is not None else None
     out_path = Path(glob_params['out_path'])
     csv_file = glob_params['csv_file'] if glob_params['csv_file'] is not None else None
+    to_do = glob_params['to_do'] if glob_params['to_do'] is not None else ['merge', 'cog']
     if csv_file is not None:
         if not csv_file.endswith('.csv'):
             csv_list = [Path(name) for name in glob.glob(str(csv_file) + "/*.csv")]
@@ -61,7 +62,7 @@ def main(overwrite: bool = False,
                 lst_img.pop(0)
             out_tif_name = str(Path(file).stem)
             try:
-                process_images(logging=logging, lst_img=lst_img, out_tif_name=out_tif_name, out_path=out_path)
+                process_images(logging=logging, lst_img=lst_img, out_tif_name=out_tif_name, out_path=out_path, to_do=to_do)
             except:
                 print(f"could not process image {out_tif_name}")
                 unprocessed_image.append(out_tif_name)
@@ -75,13 +76,13 @@ def main(overwrite: bool = False,
                 reader = csv.reader(f)
                 lst_img_tmp = list(reader)
                 lst_img = [str(elem[0]) for elem in lst_img_tmp]
-        process_images(logging=logging, lst_img=lst_img, out_tif_name=out_tif_name, out_path=out_path)
+        process_images(logging=logging, lst_img=lst_img, out_tif_name=out_tif_name, out_path=out_path, to_do=to_do)
     
     print(f"list of unprocessed images:")
     print(str(unprocessed_image))
 
 
-def process_images(logging, lst_img, out_tif_name, out_path):
+def process_images(logging, lst_img, out_tif_name, out_path, to_do):
 
     logging.info(msg=f"Processing image {out_tif_name}")
     t = tqdm(total=2)
@@ -91,7 +92,8 @@ def process_images(logging, lst_img, out_tif_name, out_path):
     out_merge = out_path / Path(out_merge_name)
 
     # 2. Merge the list of images.
-    _, err = rasterio_merge_tiles(tile_list=lst_img, outfile=out_merge, overwrite=False)
+    if 'merge' in to_do:
+        _, err = rasterio_merge_tiles(tile_list=lst_img, outfile=out_merge, overwrite=False)
 
     t.update()
 
@@ -100,8 +102,9 @@ def process_images(logging, lst_img, out_tif_name, out_path):
     options_list = ['-ot Byte', '-of COG', '-co COMPRESS=LZW', '-co BIGTIFF=YES']
     options_string = " ".join(options_list)
     out_cog = Path(out_tif_name + "_COG.tif")
-    print("COG")
-    gdal.Translate(str(out_path / out_cog), str(out_merge), options=options_string)
+    if 'cog' in to_do:
+        print("COG")
+        gdal.Translate(str(out_path / out_cog), str(out_merge), options=options_string)
     t.update()
 
 

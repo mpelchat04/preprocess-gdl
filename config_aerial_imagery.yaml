@@ -1,10 +1,11 @@
 # Preprocessing configuration file ------------------------------------------------
 
 glob:
-  base_dir: /wshare/travail/bdgrid2/EXTRACTION/Deep_learning/orthophotos/QC_Chaudiere-Etchemin/ImagerieChaudiereEtchemins/Mosa15rvb1630_15cm_Rvb/Mtm7/geotiff
-  out_path: /wshare/travail/bdgrid2/EXTRACTION/Deep_learning/orthophotos/QC_Chaudiere-Etchemin/ImagerieChaudiereEtchemins/Mosa15rvb1630_15cm_Rvb/Mtm7
+  base_dir: # /wshare/travail/bdgrid2/EXTRACTION/Deep_learning/orthophotos/QC_Chaudiere-Etchemin/ImagerieChaudiereEtchemins/Mosa15rvb1630_15cm_Rvb/Mtm7/geotiff
+  out_path: /wshare/travail/bdgrid2/EXTRACTION/Deep_learning/orthophotos/NB/lst_inferene_csv
   out_tif_name: 2018_CMQ_15cm
-  csv_file:
+  csv_file: /wshare/travail/bdgrid2/EXTRACTION/Deep_learning/orthophotos/NB/lst_inference_csv
+  to_do: ['merge', 'cog']
 
 process:
   overwrite: False # if True, overwrites existing output file

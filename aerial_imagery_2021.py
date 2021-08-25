@@ -32,10 +32,8 @@ def main(overwrite: bool = False,
     out_path = Path(glob_params['out_path'])
     csv_file = glob_params['csv_file'] if glob_params['csv_file'] is not None else None
     cog_only = glob_params['cog_only'] if glob_params['cog_only'] is True else False
-    if csv_file is not None:
-        if not csv_file.endswith('.csv'):
-            csv_list = [Path(name) for name in glob.glob(str(csv_file) + "/*.csv")]
-
+    if csv_file is not None and not csv_file.endswith('.csv'):
+        csv_list = [Path(name) for name in glob.glob(str(csv_file) + "/*.csv")]
     else:
         csv_list = None
 
